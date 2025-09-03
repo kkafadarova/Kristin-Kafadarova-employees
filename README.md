@@ -108,12 +108,12 @@ src/
     Stats/
   hooks/
     useCsvRows/
-    useEmployees/           # or useTopPairs, depending on your naming
+    useEmployees/
   utils/
-    dates/                  # UTC helpers, date parsing
-    csv/                    # CSV parser
-    overlap/                # interval merge + overlap days
-    exportCsv/              # CSV building & download
+    dates/
+    csv/
+    overlap/
+    exportCsv/
   types.ts
   App.tsx
 ```
