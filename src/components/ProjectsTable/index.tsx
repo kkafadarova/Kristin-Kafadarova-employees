@@ -8,7 +8,7 @@ function Th({
   align,
   className,
   ...rest
-}: ThHTMLAttributes<HTMLTableHeaderCellElement> & {
+}: ThHTMLAttributes<HTMLTableCellElement> & {
   children: ReactNode;
   align?: Align;
 }) {
