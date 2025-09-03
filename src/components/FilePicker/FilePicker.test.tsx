@@ -10,11 +10,7 @@ describe("FilePicker", () => {
 
     const input = screen.getByLabelText(/csv file/i) as HTMLInputElement;
     expect(input).toBeInTheDocument();
-
-    // check the accept attr
     expect(input).toHaveAttribute("accept", ".csv,text/csv");
-
-    // no file name
     expect(screen.queryByText(/\.csv$/i)).not.toBeInTheDocument();
   });
 

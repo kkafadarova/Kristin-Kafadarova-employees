@@ -21,26 +21,26 @@ function splitLines(text: string): string[] {
  */
 function parseCsvLine(line: string): string[] {
   const cells: string[] = [];
-  let cur = "";
+  let current = "";
   let inQuotes = false;
 
   for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
+    const character = line[i];
 
     if (inQuotes) {
-      if (ch === '"') {
-        if (line[i + 1] === '"') { cur += '"'; i++; }  // escaped quote
+      if (character === '"') {
+        if (line[i + 1] === '"') { current += '"'; i++; }  // escaped quote
         else inQuotes = false;
       } else {
-        cur += ch;
+        current += character;
       }
     } else {
-      if (ch === '"') inQuotes = true;
-      else if (ch === ",") { cells.push(cur.trim()); cur = ""; }
-      else cur += ch;
+      if (character === '"') inQuotes = true;
+      else if (character === ",") { cells.push(current.trim()); current = ""; }
+      else current += character;
     }
   }
-  cells.push(cur.trim());
+  cells.push(current.trim());
   return cells;
 }
 
@@ -51,9 +51,6 @@ export function parseCSV(text: string): string[][] {
 
 /**
  * Convert CSV text into Row[]:
- * - Optional header is supported (detects by presence of EmpID/ProjectID)
- * - Dates are parsed via parseFlexibleDate (NULL/empty DateTo → today)
- * - Invalid rows or reversed dates are skipped
  */
 export function rowsFromCSV(csv: string): Row[] {
   const rows = parseCSV(csv);
@@ -64,24 +61,22 @@ export function rowsFromCSV(csv: string): Row[] {
   const hasHeader = header.includes("empid") && header.includes("projectid");
   const data = hasHeader ? rows.slice(1) : rows;
 
-  const out: Row[] = [];
-  for (const rec of data) {
-    // Expected: EmpID, ProjectID, DateFrom, DateTo
-    const [emp, proj, from, to] = rec;
-    if (emp == null || proj == null || from == null) continue;
+  return data
+    .map(rec => {
+      const [emp, proj, from, to] = rec;
+      if (!emp || !proj || !from) return null;
 
-    const fromD = parseFlexibleDate(from);
-    const toD = parseFlexibleDate(to ?? "", true); // treat NULL/empty as today
+      const fromD = parseFlexibleDate(from);p
+      const toD = parseFlexibleDate(to ?? "", true); // treat NULL/empty as today
+      if (!fromD || !toD) return null;
+      if (toD.getTime() < fromD.getTime()) return null;
 
-    if (!fromD || !toD) continue;
-    if (toD.getTime() < fromD.getTime()) continue;
-
-    out.push({
-      empId: String(emp).trim(),
-      projectId: String(proj).trim(),
-      from: fromD,
-      to: toD,
-    });
-  }
-  return out;
+      return {
+        empId: String(emp).trim(),
+        projectId: String(proj).trim(),
+        from: fromD,
+        to: toD,
+      } satisfies Row;
+    })
+    .filter((row): row is Row => row !== null);
 }

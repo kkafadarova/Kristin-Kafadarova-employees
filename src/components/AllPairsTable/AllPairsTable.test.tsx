@@ -32,9 +32,6 @@ test("renders header and all rows", () => {
     screen.getByRole("columnheader", { name: /Total days/i })
   ).toBeInTheDocument();
 
-  /**
-   * removes the first row - the header
-   */
   const rows = screen.getAllByRole("row").slice(1);
   expect(rows).toHaveLength(pairs.length);
 
@@ -51,9 +48,6 @@ test("marks selected row with aria-selected and calls onSelect on click", async 
 
   render(<AllPairsTable pairs={pairs} selectedIndex={1} onSelect={onSelect} />);
 
-  /**
-   * the second row is selected
-   */
   const bodyRows = screen.getAllByRole("row").slice(1);
   expect(bodyRows[1]).toHaveAttribute("aria-selected", "true");
 
