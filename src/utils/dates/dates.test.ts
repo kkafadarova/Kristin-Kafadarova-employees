@@ -1,4 +1,3 @@
-// src/utils/__tests__/dates.test.ts
 import {
   makeUTCDate,
   todayUTC,

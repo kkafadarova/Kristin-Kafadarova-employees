@@ -70,7 +70,7 @@ export function parseFlexibleDate(raw: string, treatNullAsToday = false): Date |
     const tryMake = (mm: number, dd: number) => (isRealYMD(y, mm, dd) ? makeUTCDate(y, mm, dd) : null);
     if (a > 12 && b <= 12) return tryMake(b, a);        /** dd/MM/yyyy */
     if (b > 12 && a <= 12) return tryMake(a, b);        /** MM/dd/yyyy */
-    return tryMake(a, b);                                /** ambiguous → treat as MM/dd */
+    return tryMake(a, b);                               
   }
 
   m = s.match(/^\s*(\d{1,2})-([A-Za-z]{3})-(\d{4})\s*$/); /** d-MMM-yyyy */

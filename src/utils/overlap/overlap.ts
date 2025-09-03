@@ -3,9 +3,8 @@ import { daysDiffInclusive } from "../dates/dates";
 
 /**
  * Merges intervals that **overlap** (inclusive).
- * Example:
- *   [1–3] and [3–6]  → merged to [1–6]  (because they overlap at day 3)
- *   [1–3] and [4–6]  → NOT merged       (4 is the day after 3, no overlap)
+ *   [1–3] and [3–6]  → merged to [1–6]  
+ *   [1–3] and [4–6]  → NOT merged       
  */
 export function mergeIntervals(intervals: Interval[]): Interval[] {
   if (!intervals.length) return [];

@@ -25,19 +25,28 @@ function parseCsvLine(line: string): string[] {
   let inQuotes = false;
 
   for (let i = 0; i < line.length; i++) {
-    const character = line[i];
+    const char = line[i];
 
     if (inQuotes) {
-      if (character === '"') {
-        if (line[i + 1] === '"') { current += '"'; i++; }  // escaped quote
-        else inQuotes = false;
+      if (char === '"') {
+        if (line[i + 1] === '"') {
+          current += '"';
+          i++; // escaped quote
+        } else {
+          inQuotes = false;
+        }
       } else {
-        current += character;
+        current += char;
       }
     } else {
-      if (character === '"') inQuotes = true;
-      else if (character === ",") { cells.push(current.trim()); current = ""; }
-      else current += character;
+      if (char === '"') {
+        inQuotes = true;
+      } else if (char === ",") {
+        cells.push(current.trim());
+        current = "";
+      } else {
+        current += char;
+      }
     }
   }
   cells.push(current.trim());
@@ -50,7 +59,7 @@ export function parseCSV(text: string): string[][] {
 }
 
 /**
- * Convert CSV text into Row[]:
+ * Convert CSV text into Row[]
  */
 export function rowsFromCSV(csv: string): Row[] {
   const rows = parseCSV(csv);
@@ -66,7 +75,7 @@ export function rowsFromCSV(csv: string): Row[] {
       const [emp, proj, from, to] = rec;
       if (!emp || !proj || !from) return null;
 
-      const fromD = parseFlexibleDate(from);p
+      const fromD = parseFlexibleDate(from);
       const toD = parseFlexibleDate(to ?? "", true); // treat NULL/empty as today
       if (!fromD || !toD) return null;
       if (toD.getTime() < fromD.getTime()) return null;
@@ -76,7 +85,7 @@ export function rowsFromCSV(csv: string): Row[] {
         projectId: String(proj).trim(),
         from: fromD,
         to: toD,
-      } satisfies Row;
+      } as Row;
     })
-    .filter((row): row is Row => row !== null);
+    .filter(row => row !== null) as Row[];
 }
