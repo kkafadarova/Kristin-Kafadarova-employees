@@ -81,17 +81,12 @@ EmpID,ProjectID,DateFrom,DateTo
 
 ---
 
-## How It Works (Algorithm)
+## How It Works
 
 1. **Group**: build `project → employee → [intervals]` from the CSV.
 2. **Merge**: merge only **overlapping** intervals for each employee within each project (no “touching by next day” merge).
 3. **Aggregate**: for each pair within a project, sum **inclusive** overlaps (in days). Accumulate across projects.
 4. **Sort**: rank pairs by total days; show per-project breakdown for the selected pair.
-
-### Date & Time Safety
-
-- All parsed dates are normalized to **UTC midnight** to avoid time-zone/DST issues.
-- Day counts use `inclusive` arithmetic (e.g., `2024-01-01` to `2024-01-01` = **1** day).
 
 ---
 
