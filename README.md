@@ -21,7 +21,7 @@ A React + TypeScript app that finds the pair of employees who have worked togeth
 
 ## Quick Start
 
-````bash
+```bash
 # 1) Install deps
 npm install
 
@@ -30,7 +30,6 @@ npm run dev
 
 ### Testing
 
-```bash
 # Run tests once
 npm test
 
@@ -39,7 +38,7 @@ npm run test:watch
 
 # Coverage report
 npm run coverage
-````
+```
 
 ---
 
